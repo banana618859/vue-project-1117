@@ -3,25 +3,13 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 10:58:24
+ * @LastEditTime: 2020-11-18 11:16:14
 -->
 <template>
   <div class="wrapper">
     <div class="centerBox" style="padding:20px 50px 60px;">
       <p class="title">密码校验与生成</p>
       <el-form :model="ruleForm" :rules="rules" size="mini" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-        <el-form-item label="强口令密码判断" prop="inputStr">
-          <div style="text-align: left;">
-            <el-input 
-              style="width: 290px;" 
-              v-model="ruleForm.inputStr" placeholder="这里输入判断密码，判断是否为强口令">
-            </el-input>
-            <span class="mg-l10 mg-r10">
-              <el-button size="mini" type="primary" @click="getData">生成</el-button>
-            </span>
-            <span>{{ resultOne }}</span>
-          </div>
-        </el-form-item>
         <el-form-item label="生成安全口令">
           <div style="text-align: left;">
             <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
@@ -40,8 +28,21 @@
             </span>
             <span>{{ resultTwo }}</span>
           </div>
-          
         </el-form-item>
+        
+        <el-form-item label="强口令密码判断" prop="inputStr">
+          <div style="text-align: left;">
+            <el-input 
+              style="width: 290px;" 
+              v-model="ruleForm.inputStr" placeholder="这里输入判断密码，判断是否为强口令">
+            </el-input>
+            <span class="mg-l10 mg-r10">
+              <el-button size="mini" type="primary" @click="getData">生成</el-button>
+            </span>
+            <span>{{ resultOne }}</span>
+          </div>
+        </el-form-item>
+        
         
       </el-form>
     </div>
