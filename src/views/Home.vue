@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 15:06:10
+ * @LastEditTime: 2020-11-18 15:13:01
 -->
 <template>
   <div class="wrapper">
@@ -14,7 +14,7 @@
         <el-form-item label="强口令密码判断" prop="inputStr">
           <div style="text-align: left;">
             <el-input 
-              style="width: 290px;" 
+              style="width: 310px;" 
               v-model="ruleForm.inputStr" placeholder="这里输入判断密码，判断是否为强口令">
             </el-input>
             <span class="mg-l10 mg-r10">
@@ -35,7 +35,7 @@
                 :label="item.label" :value="item.value"></el-option>
             </el-select>
             <el-input 
-              style="width: 170px;" 
+              style="width: 190px;" 
               v-model.number="ruleForma.pwdLen" 
               @blur="checkLen(ruleForma.pwdLen)"
               placeholder="输入密码长度（最大长度200）">
