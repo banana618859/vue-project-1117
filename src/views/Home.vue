@@ -3,32 +3,13 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 11:16:14
+ * @LastEditTime: 2020-11-18 12:02:36
 -->
 <template>
   <div class="wrapper">
-    <div class="centerBox" style="padding:20px 50px 60px;">
+    <div class="centerBox" style="padding:20px 50px 60px; width: 700px; overflow: hidden;">
       <p class="title">密码校验与生成</p>
       <el-form :model="ruleForm" :rules="rules" size="mini" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-        <el-form-item label="生成安全口令">
-          <div style="text-align: left;">
-            <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
-              <el-option
-                v-for="(item,index) in allSelect"
-                :key="item.label+index" 
-                :label="item.label" :value="item.value"></el-option>
-            </el-select>
-            <el-input 
-              style="width: 170px;" 
-              v-model="ruleForm.pwdLen" 
-              placeholder="输入密码长度（最大长度200）">
-            </el-input>
-            <span class="mg-l10 mg-r10">
-              <el-button size="mini" type="primary" @click="getData2">校验</el-button>
-            </span>
-            <span>{{ resultTwo }}</span>
-          </div>
-        </el-form-item>
         
         <el-form-item label="强口令密码判断" prop="inputStr">
           <div style="text-align: left;">
@@ -43,6 +24,27 @@
           </div>
         </el-form-item>
         
+        <el-form-item label="生成安全口令">
+          <div style="text-align: left;">
+            <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
+              <el-option
+                v-for="(item,index) in allSelect"
+                :key="item.label+index" 
+                :label="item.label" :value="item.value"></el-option>
+            </el-select>
+            <el-input 
+              style="width: 170px;" 
+              v-model.number="ruleForm.pwdLen" 
+              @blur="checkLen(ruleForm.pwdLen)"
+              placeholder="输入密码长度（最大长度200）">
+            </el-input>
+            <span class="mg-l10 mg-r10">
+              <el-button size="mini" type="primary" @click="getData2">校验</el-button>
+            </span>
+            
+          </div>
+        </el-form-item>
+        <div class="zhoz_br" v-if="resultTwo" style="text-align: left; padding-left: 125px;">{{ resultTwo }}</div>
         
       </el-form>
     </div>
@@ -56,7 +58,7 @@ export default {
     return{
       ruleForm: {
         inputStr: '',
-        policyId: '',
+        policyId: 0,
         pwdLen: ''
       },
       allSelect:[
@@ -78,7 +80,7 @@ export default {
         }
       ],
       resultOne:'是/否',
-      resultTwo: '出现密码结果',
+      resultTwo: '',
       rules: {
         inputStr: [
           { required: true, message: '请输入密码', trigger: 'blur' }
@@ -93,6 +95,27 @@ export default {
     // },2000)
   },
   methods: {
+    checkLen(len){
+      console.log('len:',len);
+      let rel = this.isNumber(len);
+      if(!rel){
+        this.$message({
+          message: '请输入数字',
+          type: 'warning'
+        })
+      }
+      if(len>200){
+        this.$message({
+          message: '不能大于200',
+          type: 'warning'
+        })
+        this.ruleForm.pwdLen = 200;
+      }
+    },
+    isNumber(obj) {  
+      console.log(typeof obj)
+      return obj === +obj  
+    },
     getData(){
       let that = this;
       this.$axios({
@@ -119,7 +142,7 @@ export default {
           pwdLen: that.ruleForm.pwdLen
         }
       }).then(res => {
-        console.log("强度res:",res)
+        console.log("强度res-2:",res)
         that.resultTwo = '通过'
       })
       .catch(error=>{
@@ -167,6 +190,12 @@ export default {
     font-size: 18px;
     font-weight: 600;
     text-align: center;
+  }
+  .zhoz_br {
+    /* for FF,Opera ，固定宽度;隐藏多余的字符*/
+    overflow:hidden;
+    /* for IE,Safari ，支持自动换行*/
+    word-wrap:break-word;word-break:normal;
   }
   
 </style>
