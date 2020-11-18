@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 14:07:31
+ * @LastEditTime: 2020-11-18 15:06:10
 -->
 <template>
   <div class="wrapper">
@@ -18,15 +18,17 @@
               v-model="ruleForm.inputStr" placeholder="这里输入判断密码，判断是否为强口令">
             </el-input>
             <span class="mg-l10 mg-r10">
-              <el-button size="mini" type="primary" @click="getData">生成</el-button>
+              <el-button size="mini" type="primary" @click="submitForm('ruleForm')">生成</el-button>
             </span>
             <span>{{ resultOne }}</span>
           </div>
         </el-form-item>
-        
+      </el-form>
+
+      <el-form :model="ruleForma" :rules="rulesa" size="mini" ref="ruleForma" label-width="120px" class="demo-ruleForm">
         <el-form-item label="生成安全口令" prop="pwdLen">
           <div style="text-align: left;">
-            <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
+            <el-select style="width:120px;" v-model="ruleForma.policyId" placeholder="选择策略ID">
               <el-option
                 v-for="(item,index) in allSelect"
                 :key="item.label+index" 
@@ -34,12 +36,12 @@
             </el-select>
             <el-input 
               style="width: 170px;" 
-              v-model.number="ruleForm.pwdLen" 
-              @blur="checkLen(ruleForm.pwdLen)"
+              v-model.number="ruleForma.pwdLen" 
+              @blur="checkLen(ruleForma.pwdLen)"
               placeholder="输入密码长度（最大长度200）">
             </el-input>
             <span class="mg-l10 mg-r10">
-              <el-button size="mini" type="primary" :disabled="isDisable" @click="getData2">校验</el-button>
+              <el-button size="mini" type="primary" @click="submitForma('ruleForma')">校验</el-button>
             </span>
             
           </div>
@@ -56,7 +58,6 @@ export default {
   props: {},
   data(){
     var checkNum = (rule, value, callback) => {
-      this.isDisable = true;
       if (!value) {
         return callback(new Error('密码长度不能为空'));
       }
@@ -66,20 +67,19 @@ export default {
         if (value > 200) {
           callback(new Error('长度不能大于200'));
           this.ruleForm.pwdLen = 200;
-          this.isDisable = false;
         } else {
           callback();
-          this.isDisable = false;
         }
       }
     };
     return{
       ruleForm: {
-        inputStr: '',
+        inputStr: ''
+      },
+      ruleForma: {
         policyId: 0,
         pwdLen: ''
       },
-      isDisable: true,
       allSelect:[
         {
           label: '策略0',
@@ -103,7 +103,9 @@ export default {
       rules: {
         inputStr: [
           { required: true, message: '请输入密码', trigger: 'blur' }
-        ],
+        ]
+      },
+      rulesa: {
         pwdLen: [
           { required: true, message: '请输入密码长度', trigger: 'blur' },
           { validator: checkNum, trigger: 'blur' }
@@ -177,6 +179,17 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('submit!');
+          this.getData()
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    submitForma(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.getData2()
         } else {
           console.log('error submit!!');
           return false;
