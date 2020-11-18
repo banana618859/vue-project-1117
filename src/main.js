@@ -3,14 +3,14 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-17 22:51:11
+ * @LastEditTime: 2020-11-18 11:05:18
  */
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
-Vue.config.productionTip = true;
+Vue.config.productionTip = false;
 
 // 引入样式
 import './assets/main.css'
