@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 13:55:23
+ * @LastEditTime: 2020-11-18 14:07:31
 -->
 <template>
   <div class="wrapper">
@@ -65,9 +65,10 @@ export default {
       } else {
         if (value > 200) {
           callback(new Error('长度不能大于200'));
+          this.ruleForm.pwdLen = 200;
+          this.isDisable = false;
         } else {
           callback();
-          this.pwdLen = 200;
           this.isDisable = false;
         }
       }
@@ -104,6 +105,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         pwdLen: [
+          { required: true, message: '请输入密码长度', trigger: 'blur' },
           { validator: checkNum, trigger: 'blur' }
         ]
       }
