@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:35:52
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 11:11:36
+ * @LastEditTime: 2020-11-18 11:19:31
  */
 module.exports = {
   lintOnSave: false,
@@ -15,8 +15,8 @@ module.exports = {
 　　　　//以上的ip和端口是我们本机的;下面为需要跨域的
 　　　　proxy: {  //配置跨域
 　　　　　　　　'/api': {
-// 　　　　　　　　　　target: 'http://100.95.131.203:8080/',  //这里后台的地址模拟的;应该填写你们真实的后台接口
-　　　　　　　　　　target: 'http://localhost:9000/',
+　　　　　　　　　　target: 'http://100.95.131.203:8080/',  //这里后台的地址模拟的;应该填写你们真实的后台接口
+// 　　　　　　　　　　target: 'http://localhost:9000/',
                   ws: true,
 　　　　　　　　　　changOrigin: true,  //允许跨域
 　　　　　　　　　　pathRewrite: {
