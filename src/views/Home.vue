@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 10:44:02
+ * @LastEditTime: 2020-11-18 10:58:24
 -->
 <template>
   <div class="wrapper">
@@ -25,8 +25,10 @@
         <el-form-item label="生成安全口令">
           <div style="text-align: left;">
             <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
-              <el-option label="策略ID1" value="ID1"></el-option>
-              <el-option label="策略ID2" value="ID2"></el-option>
+              <el-option
+                v-for="(item,index) in allSelect"
+                :key="item.label+index" 
+                :label="item.label" :value="item.value"></el-option>
             </el-select>
             <el-input 
               style="width: 170px;" 
@@ -56,6 +58,24 @@ export default {
         policyId: '',
         pwdLen: ''
       },
+      allSelect:[
+        {
+          label: '策略0',
+          value: 0
+        },
+        {
+          label: '策略1',
+          value: 1
+        },
+        {
+          label: '策略2',
+          value: 2
+        },
+        {
+          label: '策略3',
+          value: 3
+        }
+      ],
       resultOne:'是/否',
       resultTwo: '出现密码结果',
       rules: {

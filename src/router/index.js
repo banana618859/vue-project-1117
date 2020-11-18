@@ -1,6 +1,14 @@
+/*
+ * @Descripttion: 
+ * @Author: yizheng.yuan
+ * @Date: 2020-11-17 21:34:10
+ * @LastEditors: yizheng.yuan
+ * @LastEditTime: 2020-11-18 10:48:54
+ */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../components/Login.vue';
+import aaa from '../components/aaa.vue';
 
 Vue.use(VueRouter);
 
@@ -9,6 +17,11 @@ const routes = [
     path: '/',
     name: 'login',
     component: Login,
+  },
+  {
+    path: '/aaa',
+    name: 'aaa',
+    component: aaa,
   },
   {
     path: '/home',
