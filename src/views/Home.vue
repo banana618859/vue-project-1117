@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-18 12:02:36
+ * @LastEditTime: 2020-11-18 13:55:23
 -->
 <template>
   <div class="wrapper">
@@ -24,7 +24,7 @@
           </div>
         </el-form-item>
         
-        <el-form-item label="生成安全口令">
+        <el-form-item label="生成安全口令" prop="pwdLen">
           <div style="text-align: left;">
             <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
               <el-option
@@ -39,7 +39,7 @@
               placeholder="输入密码长度（最大长度200）">
             </el-input>
             <span class="mg-l10 mg-r10">
-              <el-button size="mini" type="primary" @click="getData2">校验</el-button>
+              <el-button size="mini" type="primary" :disabled="isDisable" @click="getData2">校验</el-button>
             </span>
             
           </div>
@@ -55,12 +55,30 @@
 export default {
   props: {},
   data(){
+    var checkNum = (rule, value, callback) => {
+      this.isDisable = true;
+      if (!value) {
+        return callback(new Error('密码长度不能为空'));
+      }
+      if (!Number.isInteger(value)) {
+        callback(new Error('请输入数字值'));
+      } else {
+        if (value > 200) {
+          callback(new Error('长度不能大于200'));
+        } else {
+          callback();
+          this.pwdLen = 200;
+          this.isDisable = false;
+        }
+      }
+    };
     return{
       ruleForm: {
         inputStr: '',
         policyId: 0,
         pwdLen: ''
       },
+      isDisable: true,
       allSelect:[
         {
           label: '策略0',
@@ -84,6 +102,9 @@ export default {
       rules: {
         inputStr: [
           { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        pwdLen: [
+          { validator: checkNum, trigger: 'blur' }
         ]
       }
     }
@@ -98,19 +119,19 @@ export default {
     checkLen(len){
       console.log('len:',len);
       let rel = this.isNumber(len);
-      if(!rel){
-        this.$message({
-          message: '请输入数字',
-          type: 'warning'
-        })
-      }
-      if(len>200){
-        this.$message({
-          message: '不能大于200',
-          type: 'warning'
-        })
-        this.ruleForm.pwdLen = 200;
-      }
+      // if(!rel){
+      //   this.$message({
+      //     message: '请输入数字',
+      //     type: 'warning'
+      //   })
+      // }
+      // if(len>200){
+      //   this.$message({
+      //     message: '不能大于200',
+      //     type: 'warning'
+      //   })
+      //   this.ruleForm.pwdLen = 200;
+      // }
     },
     isNumber(obj) {  
       console.log(typeof obj)
