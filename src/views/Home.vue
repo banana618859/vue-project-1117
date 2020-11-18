@@ -3,20 +3,149 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-17 21:50:45
+ * @LastEditTime: 2020-11-18 10:44:02
 -->
 <template>
-  <div>
-    home页面
+  <div class="wrapper">
+    <div class="centerBox" style="padding:20px 50px 60px;">
+      <p class="title">密码校验与生成</p>
+      <el-form :model="ruleForm" :rules="rules" size="mini" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+        <el-form-item label="强口令密码判断" prop="inputStr">
+          <div style="text-align: left;">
+            <el-input 
+              style="width: 290px;" 
+              v-model="ruleForm.inputStr" placeholder="这里输入判断密码，判断是否为强口令">
+            </el-input>
+            <span class="mg-l10 mg-r10">
+              <el-button size="mini" type="primary" @click="getData">生成</el-button>
+            </span>
+            <span>{{ resultOne }}</span>
+          </div>
+        </el-form-item>
+        <el-form-item label="生成安全口令">
+          <div style="text-align: left;">
+            <el-select style="width:120px;" v-model="ruleForm.policyId" placeholder="选择策略ID">
+              <el-option label="策略ID1" value="ID1"></el-option>
+              <el-option label="策略ID2" value="ID2"></el-option>
+            </el-select>
+            <el-input 
+              style="width: 170px;" 
+              v-model="ruleForm.pwdLen" 
+              placeholder="输入密码长度（最大长度200）">
+            </el-input>
+            <span class="mg-l10 mg-r10">
+              <el-button size="mini" type="primary" @click="getData2">校验</el-button>
+            </span>
+            <span>{{ resultTwo }}</span>
+          </div>
+          
+        </el-form-item>
+        
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
-  name: 'Home',
-  components: {
+  props: {},
+  data(){
+    return{
+      ruleForm: {
+        inputStr: '',
+        policyId: '',
+        pwdLen: ''
+      },
+      resultOne:'是/否',
+      resultTwo: '出现密码结果',
+      rules: {
+        inputStr: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+      }
+    }
   },
+  created(){
+    // this.getData()
+    // setTimeout(()=>{
+    //   this.getData2()
+    // },2000)
+  },
+  methods: {
+    getData(){
+      let that = this;
+      this.$axios({
+        url: `${window.baseUrl}/pwd/isStrong`,
+        method: "get",
+        params:{
+          inputStr: that.ruleForm.inputStr
+        }
+      }).then(res => {
+        console.log("强度res:",res)
+      })
+      .catch(error=>{
+        console.log("发生错误:",error)
+        that.resultOne = '发生错误'
+      })
+    },
+    getData2(){
+      let that = this;
+      this.$axios({
+        url: `${window.baseUrl}/pwd/generateByPolicy`,
+        method: "get",
+        params:{
+          policyId: that.ruleForm.policyId,
+          pwdLen: that.ruleForm.pwdLen
+        }
+      }).then(res => {
+        console.log("强度res:",res)
+        that.resultTwo = '通过'
+      })
+      .catch(error=>{
+        console.log("发生错误:",error)
+        that.resultTwo = '发生错误2'
+      })
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  }
 };
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  .wrapper{
+    position: absolute;
+    top: 0;right: 0;bottom: 0;left: 0; margin: auto;
+    background-color: #fafafa;
+  }
+  .centerBox{
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #ccc;
+    background-color: #eee;
+    padding: 20px  40px;
+    border-radius: 5px;
+  }
+  .title{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+</style>

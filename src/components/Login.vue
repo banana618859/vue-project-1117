@@ -3,7 +3,7 @@
  * @Author: yizheng.yuan
  * @Date: 2020-11-17 21:34:10
  * @LastEditors: yizheng.yuan
- * @LastEditTime: 2020-11-17 22:43:41
+ * @LastEditTime: 2020-11-18 10:31:11
 -->
 <template>
   <div class="wrapper">
@@ -46,10 +46,7 @@ export default {
     }
   },
   created(){
-    this.getData()
-    setTimeout(()=>{
-      this.getData2()
-    },2000)
+    
   },
   methods: {
     getData(){
@@ -85,6 +82,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log('submit!');
+          this.$router.push('/home')
         } else {
           console.log('error submit!!');
           return false;
